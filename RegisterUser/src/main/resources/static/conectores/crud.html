@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="crud.css">
+  <title>CRUD de Usuarios</title>
+</head>
+<body>
+  <div class="crud-container">
+    <h1>Administrar Usuarios</h1>
+
+    <h2>Agregar Usuario</h2>
+    <form id="addUserForm" class="form-container">
+      <input type="text" id="newUsername" placeholder="Nuevo Usuario" required />
+      <input type="password" id="newPassword" placeholder="Nueva Contraseña" required />
+      <button type="submit" class="btn submit-btn">Agregar Usuario</button>
+    </form>
+
+    <h2>Lista de Usuarios</h2>
+    <ul id="userList" class="user-list"></ul>
+  </div>
+
+  <script>
+    // Función para obtener los usuarios desde el servidor
+    async function fetchUsers() {
+      const response = await fetch("/usuarios");
+      const users = await response.json();
+
+      const userList = document.getElementById("userList");
+      userList.innerHTML = ""; // Limpiar la lista antes de actualizar
+
+      users.forEach((user, index) => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("user-item");
+        listItem.innerHTML = `${user.username} <button class="btn delete-btn" onclick="deleteUser(${index})">Eliminar</button> <button class="btn edit-btn" onclick="editUser(${index})">Editar</button>`;
+        userList.appendChild(listItem);
+      });
+    }
+
+    // Función para agregar un usuario
+    document.getElementById("addUserForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("newUsername").value;
+      const password = document.getElementById("newPassword").value;
+
+      const response = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        fetchUsers();  // Actualizar la lista de usuarios
+      } else {
+        alert(result.error);
+      }
+
+      // Limpiar el formulario
+      document.getElementById("newUsername").value = "";
+      document.getElementById("newPassword").value = "";
+    });
+
+    // Función para eliminar un usuario
+    async function deleteUser(id) {
+      const response = await fetch(`/usuarios/${id}`, { method: "DELETE" });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        fetchUsers(); // Actualizar la lista de usuarios
+      } else {
+        alert(result.error);
+      }
+    }
+
+    // Función para editar un usuario
+    async function editUser(id) {
+      const newUsername = prompt("Nuevo nombre de usuario:");
+      const newPassword = prompt("Nueva contraseña:");
+
+      if (newUsername && newPassword) {
+        const response = await fetch(`/usuarios/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: newUsername, password: newPassword }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert(result.message);
+          fetchUsers(); // Actualizar la lista de usuarios
+        } else {
+          alert(result.error);
+        }
+      }
+    }
+
+    // Cargar los usuarios al cargar la página
+    window.onload = fetchUsers;
+  </script>
+</body>
+</html>

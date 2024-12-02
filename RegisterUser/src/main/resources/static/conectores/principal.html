@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa Chullunquiani</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="videoprinc.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+    <div class="content">
+        <div class="centered-content">
+            <img src="advsolooscuro-removebg-preview.png" alt="Logo Iglesia Adventista" class="logo">
+            <h1>Villa Chullunquiani</h1>
+            <h2>Gestión de Bautismo</h2>
+            <div id="randomMessage"></div>
+            <div id="verseReference"></div>
+
+            <script>
+                const messages = [
+                    {
+                        text: "\"Porque todos ustedes, los que han sido bautizados en Cristo, están revestidos de Cristo\"",
+                        reference: "Gálatas 3:27"
+                    },
+                    {
+                        text: "\"zzzz\"",
+                        reference: "zzzz"
+                    },
+                    {
+                        text: "\"xxxx\"",
+                        reference: "xxx"
+                    }
+
+                ];
+
+                function displayRandomMessage() {
+                    const randomIndex = Math.floor(Math.random() * messages.length);
+                    document.getElementById('randomMessage').innerText = messages[randomIndex].text;
+                    document.getElementById('verseReference').innerText = messages[randomIndex].reference;
+                }
+
+                window.onload = displayRandomMessage; z
+            </script>
+
+
+            <div class="buttons">
+                <a href="login.html" class="btn">Iniciar sesión</a>
+                <a href="register.html" class="btn">Afiliarse</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+    </div>
+</body>
+
+</html>
